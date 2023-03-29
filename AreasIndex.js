@@ -1,3 +1,6 @@
+import { HOST_WITH_PORT } from "./Environment";
+import { useState, useEffect } from "react";
+
 import { Link, useParams } from "react-router-dom";
 import {
   SafeAreaView,
@@ -15,20 +18,29 @@ import {
   Keyboard,
 } from "react-native";
 
-export function AreasIndex(props) {
+export function AreasIndex({ route, navigation }) {
+  const { data } = route.params;
+  const areas = Object.values(data);
+  console.log(areas);
+
+  const [areaID, setAreaID] = useState([]);
+
   return (
     <View>
-      <h1>All areas</h1>
-      {props.areas.map((area) => (
-        <div key={area.id}>
-          <h2>{area.name}</h2>
-          <img src={area.image_url} />
-          <p>Location: {area.location}</p>
-          <p>Routes: {area.route_quantity}</p>
-          <Link to={`/routes?area_id=${area.id}`} className="btn btn-primary">
-            See routes
-          </Link>
-        </div>
+      <Text>All areas</Text>
+      {areas.map((area) => (
+        <View key={area.id}>
+          <Text>Name: {area.name}</Text>
+          {/* <Image source={area.image_url} /> */}
+          <Text>Location: {area.location}</Text>
+          <Text>Routes: {area.route_quantity}</Text>
+          <Button
+            title="View Routes"
+            onPress={() => {
+              navigation.navigate("Routes");
+            }}
+          />
+        </View>
       ))}
     </View>
   );
